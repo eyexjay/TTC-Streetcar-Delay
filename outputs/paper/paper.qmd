@@ -1,9 +1,7 @@
 ---
-title: "My title"
+title: "TTC Streetcar Delays based on Times of the Day"
 subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
+author: "Isha Juneja"
 thanks: "Code and data are available at: LINK."
 date: today
 date-format: long
@@ -20,16 +18,18 @@ bibliography: references.bib
 
 library(tidyverse)
 library(palmerpenguins)
-```
 
+library(opendatatoronto)
+library(tidyverse)
+library(dplyr)
+library(here)
+library(tinytex)
+
+```
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. 
-
-The remainder of this paper is structured as follows. @sec-data....
-
-
+The TTC Streetcars is one of the ways people commute and get around in Toronto. However, this mode of transportation is not always predictable and can have a lot of delays depending on the time of day. This is because at different ties of day, the city experiences different traffic patterns or other operational incidents. This paper will analyze the delays for each streetcar line running so that it is easier to commute in the city and adjust for delay times so that people can reach their desired destinations on time.
 
 # Data {#sec-data}
 
@@ -37,16 +37,46 @@ Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
 ```{r}
 #| label: fig-bills
-#| fig-cap: Bills of penguins
+#| fig-cap: Delay Data
 #| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+
+delay_data <- read_csv(here::here("outputs/data/cleaned_ttc-streetcar-delay-2023_data.csv"), show_col_types=FALSE)
+
+
+NoDelay <-
+delay_data |> filter(TypeofDelay == "No delay") %>% group_by(Hour) %>% tally()
+# Sorting the x-axis according to hour
+NoDelay <- NoDelay[order(strptime(NoDelay$Hour, format="%H:%M")),]
+
+
+SmallDelay <-
+  delay_data |> filter(TypeofDelay == "Small delay") %>% group_by(Hour) %>% tally()
+# Sorting the x-axis according to hour
+SmallDelay <- SmallDelay[order(strptime(SmallDelay$Hour, format="%H:%M")),]
+
+
+BigDelay <-
+  delay_data |> filter(TypeofDelay == "Big delay") %>% group_by(Hour) %>% tally()
+# Sorting the x-axis according to hour
+BigDelay <- BigDelay[order(strptime(BigDelay$Hour, format="%H:%M")),]
+
+
+#### Graph of TTC StreetCar Delay by the hour of the day ####
+
+
+# No Delay Barplot
+ggplot(NoDelay[order(NoDelay$Hour),], aes(x=Hour, y=n)) + 
+  geom_bar(stat = "identity", width=0.8) 
+
+# Small Delay Barplot
+ggplot(SmallDelay[order(SmallDelay$Hour),], aes(x=Hour, y=n)) + 
+  geom_bar(stat = "identity", width=0.8) 
+
+# Big Delay Barplot
+ggplot(BigDelay[order(BigDelay$Hour),], aes(x=Hour, y=n)) + 
+  geom_bar(stat = "identity", width=0.8) 
+
 ```
 
 Talk more about it.
@@ -59,49 +89,18 @@ And also planes (@fig-planes). (You can change the height and width, but don't w
 #| echo: false
 #| warning: false
 #| message: false
-
-analysis_data <- read_csv(here::here("outputs/data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+# 
+# analysis_data <- read_csv(here::here("outputs/data/analysis_data.csv"))
+# 
+# analysis_data |> 
+#   ggplot(aes(x = width, y = length)) +
+#   geom_point(alpha = 0.8) +
+#   theme_minimal() +
+#   labs(x = "Wing width (mm)",
+#        y = "Wing length (mm)")
 ```
 
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
+Talk way more about it.
 
 # Results
 
@@ -113,10 +112,10 @@ Our results are summarized in @tbl-modelresults.
 #| warning: false
 #| message: false
 
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("outputs/models/first_model.rds"))
+# library(rstanarm)
+# 
+# first_model <-
+#   readRDS(file = here::here("outputs/models/first_model.rds"))
 ```
 
 ```{r}
@@ -126,23 +125,22 @@ first_model <-
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
+# modelsummary::modelsummary(
+#   list(
+#     "First model" = first_model
+#   ),
+#   statistic = "mad",
+#   fmt = 2
+# )
 ```
 
-
-
+The data section shows that
 
 # Discussion
 
 ## First discussion point {#sec-first-point}
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
 
 ## Second discussion point
 
@@ -156,8 +154,7 @@ Weaknesses and next steps should also be included.
 
 \appendix
 
-# Appendix {-}
-
+# Appendix {.unnumbered}
 
 # Additional data details
 
@@ -167,7 +164,7 @@ Weaknesses and next steps should also be included.
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
 
 ```{r}
 #| eval: true
@@ -179,15 +176,15 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 #| fig-cap: "Examining how the model fits, and is affected by, the data"
 #| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
 
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
+# pp_check(first_model) +
+#   theme_classic() +
+#   theme(legend.position = "bottom")
+# 
+# posterior_vs_prior(first_model) +
+#   theme_minimal() +
+#   scale_color_brewer(palette = "Set1") +
+#   theme(legend.position = "bottom") +
+#   coord_flip()
 ```
 
 ## Diagnostics
@@ -206,16 +203,11 @@ posterior_vs_prior(first_model) +
 #| fig-subcap: ["Trace plot", "Rhat plot"]
 #| layout-ncol: 2
 
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
+# plot(first_model, "trace")
+# 
+# plot(first_model, "rhat")
 ```
-
-
 
 \newpage
 
-
 # References
-
-

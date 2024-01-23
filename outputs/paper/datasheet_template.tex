@@ -1,0 +1,866 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Datasheet for TTC Streetcar Delay Data 2023},
+  pdfauthor={First author; Another author},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Datasheet for TTC Streetcar Delay Data 2023\thanks{Code and data
+are available at: LINK.}}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{My subtitle if needed}
+\author{First author \and Another author}
+\date{Invalid Date}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+First sentence. Second sentence. Third sentence. Fourth sentence.
+\end{abstract}
+
+Extract of the questions from Gebru et al. (2021).
+
+\textbf{Motivation}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{For what purpose was the dataset created? Was there a specific
+  task in mind? Was there a specific gap that needed to be filled?
+  Please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The dataset was created to enable analysis of Australian
+    politicians. We were unable to find a publicly available dataset in
+    a structured format that had the biographical and political
+    information on Australian politicians that was needed for modelling.
+  \end{itemize}
+\item
+  \emph{Who created the dataset (for example, which team, research
+  group) and on behalf of which entity (for example, company,
+  institution, organization)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Who funded the creation of the dataset? If there is an
+  associated grant, please provide the name of the grantor and the grant
+  name and number.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Composition}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{What do the instances that comprise the dataset represent (for
+  example, documents, photos, people, countries)? Are there multiple
+  types of instances (for example, movies, users, and ratings; people
+  and interactions between them; nodes and edges)? Please provide a
+  description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{How many instances are there in total (of each type, if
+  appropriate)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Does the dataset contain all possible instances or is it a
+  sample (not necessarily random) of instances from a larger set? If the
+  dataset is a sample, then what is the larger set? Is the sample
+  representative of the larger set (for example, geographic coverage)?
+  If so, please describe how this representativeness was
+  validated/verified. If it is not representative of the larger set,
+  please describe why not (for example, to cover a more diverse range of
+  instances, because instances were withheld or unavailable).}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{What data does each instance consist of? ``Raw'' data (for
+  example, unprocessed text or images) or features? In either case,
+  please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is there a label or target associated with each instance? If so,
+  please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is any information missing from individual instances? If so,
+  please provide a description, explaining why this information is
+  missing (for example, because it was unavailable). This does not
+  include intentionally removed information, but might include, for
+  example, redacted text.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Are relationships between individual instances made explicit
+  (for example, users' movie ratings, social network links)? If so,
+  please describe how these relationships are made explicit.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Are there recommended data splits (for example, training,
+  development/validation, testing)? If so, please provide a description
+  of these splits, explaining the rationale behind them.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Are there any errors, sources of noise, or redundancies in the
+  dataset? If so, please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is the dataset self-contained, or does it link to or otherwise
+  rely on external resources (for example, websites, tweets, other
+  datasets)? If it links to or relies on external resources, a) are
+  there guarantees that they will exist, and remain constant, over time;
+  b) are there official archival versions of the complete dataset (that
+  is, including the external resources as they existed at the time the
+  dataset was created); c) are there any restrictions (for example,
+  licenses, fees) associated with any of the external resources that
+  might apply to a dataset consumer? Please provide descriptions of all
+  external resources and any restrictions associated with them, as well
+  as links or other access points, as appropriate.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Does the dataset contain data that might be considered
+  confidential (for example, data that is protected by legal privilege
+  or by doctor-patient confidentiality, data that includes the content
+  of individuals' non-public communications)? If so, please provide a
+  description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Does the dataset contain data that, if viewed directly, might be
+  offensive, insulting, threatening, or might otherwise cause anxiety?
+  If so, please describe why.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Does the dataset identify any sub-populations (for example, by
+  age, gender)? If so, please describe how these subpopulations are
+  identified and provide a description of their respective distributions
+  within the dataset.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is it possible to identify individuals (that is, one or more
+  natural persons), either directly or indirectly (that is, in
+  combination with other data) from the dataset? If so, please describe
+  how.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Does the dataset contain data that might be considered sensitive
+  in any way (for example, data that reveals race or ethnic origins,
+  sexual orientations, religious beliefs, political opinions or union
+  memberships, or locations; financial or health data; biometric or
+  genetic data; forms of government identification, such as social
+  security numbers; criminal history)? If so, please provide a
+  description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Collection process}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{How was the data associated with each instance acquired? Was the
+  data directly observable (for example, raw text, movie ratings),
+  reported by subjects (for example, survey responses), or indirectly
+  inferred/derived from other data (for example, part-of-speech tags,
+  model-based guesses for age or language)? If the data was reported by
+  subjects or indirectly inferred/derived from other data, was the data
+  validated/verified? If so, please describe how.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{What mechanisms or procedures were used to collect the data (for
+  example, hardware apparatuses or sensors, manual human curation,
+  software programs, software APIs)? How were these mechanisms or
+  procedures validated?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{If the dataset is a sample from a larger set, what was the
+  sampling strategy (for example, deterministic, probabilistic with
+  specific sampling probabilities)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Who was involved in the data collection process (for example,
+  students, crowdworkers, contractors) and how were they compensated
+  (for example, how much were crowdworkers paid)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Over what timeframe was the data collected? Does this timeframe
+  match the creation timeframe of the data associated with the instances
+  (for example, recent crawl of old news articles)? If not, please
+  describe the timeframe in which the data associated with the instances
+  was created.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Were any ethical review processes conducted (for example, by an
+  institutional review board)? If so, please provide a description of
+  these review processes, including the outcomes, as well as a link or
+  other access point to any supporting documentation.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Did you collect the data from the individuals in question
+  directly, or obtain it via third parties or other sources (for
+  example, websites)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Were the individuals in question notified about the data
+  collection? If so, please describe (or show with screenshots or other
+  information) how notice was provided, and provide a link or other
+  access point to, or otherwise reproduce, the exact language of the
+  notification itself.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Did the individuals in question consent to the collection and
+  use of their data? If so, please describe (or show with screenshots or
+  other information) how consent was requested and provided, and provide
+  a link or other access point to, or otherwise reproduce, the exact
+  language to which the individuals consented.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{If consent was obtained, were the consenting individuals
+  provided with a mechanism to revoke their consent in the future or for
+  certain uses? If so, please provide a description, as well as a link
+  or other access point to the mechanism (if appropriate).}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Has an analysis of the potential impact of the dataset and its
+  use on data subjects (for example, a data protection impact analysis)
+  been conducted? If so, please provide a description of this analysis,
+  including the outcomes, as well as a link or other access point to any
+  supporting documentation.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Preprocessing/cleaning/labeling}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Was any preprocessing/cleaning/labeling of the data done (for
+  example, discretization or bucketing, tokenization, part-of-speech
+  tagging, SIFT feature extraction, removal of instances, processing of
+  missing values)? If so, please provide a description. If not, you may
+  skip the remaining questions in this section.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Was the ``raw'' data saved in addition to the
+  preprocessed/cleaned/labeled data (for example, to support
+  unanticipated future uses)? If so, please provide a link or other
+  access point to the ``raw'' data.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is the software that was used to preprocess/clean/label the data
+  available? If so, please provide a link or other access point.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Uses}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Has the dataset been used for any tasks already? If so, please
+  provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is there a repository that links to any or all papers or systems
+  that use the dataset? If so, please provide a link or other access
+  point.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{What (other) tasks could the dataset be used for?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is there anything about the composition of the dataset or the
+  way it was collected and preprocessed/cleaned/labeled that might
+  impact future uses? For example, is there anything that a dataset
+  consumer might need to know to avoid uses that could result in unfair
+  treatment of individuals or groups (for example, stereotyping, quality
+  of service issues) or other risks or harms (for example, legal risks,
+  financial harms)? If so, please provide a description. Is there
+  anything a dataset consumer could do to mitigate these risks or
+  harms?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Are there tasks for which the dataset should not be used? If so,
+  please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Distribution}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Will the dataset be distributed to third parties outside of the
+  entity (for example, company, institution, organization) on behalf of
+  which the dataset was created? If so, please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{How will the dataset be distributed (for example, tarball on
+  website, API, GitHub)? Does the dataset have a digital object
+  identifier (DOI)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{When will the dataset be distributed?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Will the dataset be distributed under a copyright or other
+  intellectual property (IP) license, and/or under applicable terms of
+  use (ToU)? If so, please describe this license and/ or ToU, and
+  provide a link or other access point to, or otherwise reproduce, any
+  relevant licensing terms or ToU, as well as any fees associated with
+  these restrictions.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Have any third parties imposed IP-based or other restrictions on
+  the data associated with the instances? If so, please describe these
+  restrictions, and provide a link or other access point to, or
+  otherwise reproduce, any relevant licensing terms, as well as any fees
+  associated with these restrictions.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Do any export controls or other regulatory restrictions apply to
+  the dataset or to individual instances? If so, please describe these
+  restrictions, and provide a link or other access point to, or
+  otherwise reproduce, any supporting documentation.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Maintenance}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Who will be supporting/hosting/maintaining the dataset?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{How can the owner/curator/manager of the dataset be contacted
+  (for example, email address)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Is there an erratum? If so, please provide a link or other
+  access point.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Will the dataset be updated (for example, to correct labeling
+  errors, add new instances, delete instances)? If so, please describe
+  how often, by whom, and how updates will be communicated to dataset
+  consumers (for example, mailing list, GitHub)?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{If the dataset relates to people, are there applicable limits on
+  the retention of the data associated with the instances (for example,
+  were the individuals in question told that their data would be
+  retained for a fixed period of time and then deleted)? If so, please
+  describe these limits and explain how they will be enforced.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Will older versions of the dataset continue to be
+  supported/hosted/maintained? If so, please describe how. If not,
+  please describe how its obsolescence will be communicated to dataset
+  consumers.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{If others want to extend/augment/build on/contribute to the
+  dataset, is there a mechanism for them to do so? If so, please provide
+  a description. Will these contributions be validated/verified? If so,
+  please describe how. If not, why not? Is there a process for
+  communicating/distributing these contributions to dataset consumers?
+  If so, please provide a description.}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\item
+  \emph{Any other comments?}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    TBD
+  \end{itemize}
+\end{enumerate}
+
+\newpage
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-gebru2021datasheets}
+Gebru, Timnit, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman
+Vaughan, Hanna Wallach, Hal Daumé Iii, and Kate Crawford. 2021.
+{``Datasheets for Datasets.''} \emph{Communications of the ACM} 64 (12):
+86--92.
+
+\end{CSLReferences}
+
+
+
+\end{document}
